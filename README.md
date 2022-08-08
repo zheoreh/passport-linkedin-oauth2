@@ -1,15 +1,46 @@
 A simple [Passport](http://passportjs.org/) strategy for LinkedIn OAuth2 that works with lite profile.
 
+This fork implements optional callback function that can be used to pass client id and secret 
+to initialise oauth2 each time directly before an authentication. This function is called 
+with the request object.
+
+```js
+var LinkedInStrategy = require('@dmapper/passport-linkedin-oauth2').Strategy;
+
+passport.use(new LinkedInStrategy({
+    getClient: async function(req) {
+      // some possible async operations
+      // ...
+      return {
+        id: '#####',
+        secret: '#####'
+      }
+    },
+    callbackURL: "http://127.0.0.1:3000/auth/linkedin/callback",
+    scope: ['r_emailaddress', 'r_liteprofile'],
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // To keep the example simple, the user's LinkedIn profile is returned to
+    // represent the logged-in user. In a typical application, you would want
+    // to associate the LinkedIn account with a user record in your database,
+    // and return that user instead.
+    return done(null, profile);
+  }
+));
+```
+====================================================================================
+
+
 ## Install
 
-  npm install passport-linkedin-oauth2
+  npm install @dmapper/passport-linkedin-oauth2
 
 ## Usage
 
 Register the strategy
 
 ~~~javascript
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+var LinkedInStrategy = require('@dmapper/passport-linkedin-oauth2').Strategy;
 
 passport.use(new LinkedInStrategy({
   clientID: LINKEDIN_KEY,
@@ -55,7 +86,7 @@ See [this](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-
 The `state` param is used to prevent CSRF attacks, and is [required by the LinkedIn API](https://developer.linkedin.com/documents/authentication). You can ask Passport to handle the sending and validating of the `state` parameter by passing `state: true` as an option to the strategy:
 
 ~~~javascript
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+var LinkedInStrategy = require('@dmapper/passport-linkedin-oauth2').Strategy;
 
 passport.use(new LinkedInStrategy({
   clientID: LINKEDIN_KEY,
