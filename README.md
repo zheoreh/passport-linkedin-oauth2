@@ -1,7 +1,7 @@
 A simple [Passport](http://passportjs.org/) strategy for LinkedIn OAuth2 that works with lite profile.
 
 This fork implements optional callback function that can be used to pass client id and secret 
-to initialise oauth2 each time directly before an authentication. This function is called 
+to initialize oauth2 each time directly before an authentication. This function is called 
 with the request object.
 
 ```js
